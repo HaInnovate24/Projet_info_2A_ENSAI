@@ -8,8 +8,8 @@ class GamePlayModel(BaseModel):
 
 
 class GameResponse(BaseModel):
-    player1: str
-    player2: str
+    username1: str
+    username2: str
     description: str
     winner: str | None
     new_elo1: int

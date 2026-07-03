@@ -34,8 +34,8 @@ def play_game(
     game = game_service.play(current_player.id_player, req.id_opponent, req.game_mode, **req.params)
 
     return GameResponse(
-        player1=game.player1.username,
-        player2=game.player2.username,
+        username1=game.player1.username,
+        username2=game.player2.username,
         description=game.description,
         winner=game.winner.username if game.winner else None,
         new_elo1=game.player1.elo,
