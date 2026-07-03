@@ -3,38 +3,39 @@ import os
 
 class ScoringStrategy:
     @classmethod
-    def expected_score(cls, elo1, elo2):
-        """Calculates the expected score (probability of winning) using the Elo formula.
+    def calculate_expected_score(cls, elo_a, elo_b) -> float:
+        """Calculates the probability of player A winning against player B.
         Args:
-            elo1 (float): The current Elo rating of player 1.
-            elo2 (float): The current Elo rating of player 2.
+            elo_a (float): The current Elo rating of first player.
+            elo_b (float): The current Elo rating of second player.
 
         Returns:
             float: The expected score for player 1 (between 0 and 1).
         """
-        return 1 / (1 + 10 ** ((elo2 - elo1) / 400))
+        return 1 / (1 + 10 ** ((elo_b - elo_a) / 400))
 
     @classmethod
-    def compute_elo(cls, elo1, elo2, win1):
+    def calculate_new_ratings(cls, elo_a, elo_b, player_a_won: bool) -> tuple[int, int]:
         """Computes the new Elo ratings for two players after a match.
         Args:
-            elo1 (int): Current Elo of player 1.
-            elo2 (int): Current Elo of player 2.
+            elo_a (float): Current Elo of player 1.
+            elo_b (float): Current Elo of player 2.
             win1 (bool): True if player 1 won, False if player 2 won.
         Returns:
             tuple[int, int]: A tuple containing (new_elo1, new_elo2).
         """
-        K_FACTOR = int(os.environ["ELO_K_FACTOR"])
+        k_factor = int(os.environ["ELO_K_FACTOR"])
 
-        s1, s2 = win1 * 1, 1 - win1 * 1
+        score_a = 1.0 if player_a_won else 0.0
+        score_b = 1.0 - score_a
 
-        new_elo1 = round(elo1 + K_FACTOR * (s1 - cls.expected_score(elo1, elo2)))
-        new_elo2 = round(elo2 + K_FACTOR * (s2 - cls.expected_score(elo2, elo1)))
+        new_elo_a = round(elo_a + k_factor * (score_a - cls.calculate_expected_score(elo_a, elo_b)))
+        new_elo_b = round(elo_b + k_factor * (score_b - cls.calculate_expected_score(elo_b, elo_a)))
 
-        return new_elo1, new_elo2
+        return new_elo_a, new_elo_b
 
     @classmethod
-    def compute(cls, game):
+    def update_player_ratings(cls, game):
         """Calculates and persists the new Elo ratings for both players.
         No update if it is a Draw.
         Args:
@@ -46,4 +47,6 @@ class ScoringStrategy:
         player1 = game.player1
         player2 = game.player2
 
-        player1.elo, player2.elo = cls.compute_elo(player1.elo, player2.elo, player1 == game.winner)
+        player1.elo, player2.elo = cls.calculate_new_ratings(
+            player1.elo, player2.elo, player1 == game.winner
+        )

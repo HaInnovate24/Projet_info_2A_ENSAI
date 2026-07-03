@@ -35,7 +35,7 @@ class GameService:
 
         game = mode.play(p1, p2, **kwargs)
 
-        ScoringStrategy.compute(game)
+        ScoringStrategy.update_player_ratings(game)
 
         PlayerDao().update(p1)
         PlayerDao().update(p2)
