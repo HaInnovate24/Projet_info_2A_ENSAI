@@ -165,7 +165,3 @@ def test_login_ko():
 
     # THEN
     assert not player
-
-
-if __name__ == "__main__":
-    pytest.main([__file__])

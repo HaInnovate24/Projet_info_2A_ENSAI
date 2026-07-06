@@ -78,9 +78,3 @@ def test_username_already_used_no():
 
     # THEN
     assert not res
-
-
-if __name__ == "__main__":
-    import pytest
-
-    pytest.main([__file__])

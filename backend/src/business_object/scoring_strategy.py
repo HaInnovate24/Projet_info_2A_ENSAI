@@ -20,7 +20,7 @@ class ScoringStrategy:
         Args:
             elo_a (float): Current Elo of player 1.
             elo_b (float): Current Elo of player 2.
-            win1 (bool): True if player 1 won, False if player 2 won.
+            player_a_won (bool): True if player 1 won, False if player 2 won.
         Returns:
             tuple[int, int]: A tuple containing (new_elo1, new_elo2).
         """
