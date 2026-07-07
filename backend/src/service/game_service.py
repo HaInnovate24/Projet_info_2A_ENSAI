@@ -1,7 +1,9 @@
 from fastapi import HTTPException
 
+from business_object.game import Game
 from business_object.game_mode.game_mode_factory import GameModeFactory
 from business_object.scoring_strategy import ScoringStrategy
+from dao.game_dao import GameDao
 from dao.player_dao import PlayerDao
 from utils.log_utils import log
 
@@ -37,7 +39,33 @@ class GameService:
 
         ScoringStrategy.update_player_ratings(game)
 
+        GameDao().create(game)
         PlayerDao().update(p1)
         PlayerDao().update(p2)
 
         return game
+
+    @log
+    def find_by_id(self, id_game: int) -> Game:
+        """Find a specific game by its id.
+        Args:
+            id_game (int): The unique identifier of the game.
+        Returns:
+            Game object if found, otherwise None.
+        """
+        return GameDao().find_by_id(id_game)
+
+    @log
+    def find_all_by_player(self, id_player: int, game_mode: str = None) -> list[Game]:
+        """List all games involving a specific player.
+        Args:
+            id_player (int): The unique identifier of the player.
+        Returns:
+            list[Game] containing all matches the player participated in.
+        """
+        games = GameDao().find_all_by_player(id_player)
+
+        if game_mode is None:
+            return games
+        else:
+            return [g for g in games if g.game_mode == game_mode]
