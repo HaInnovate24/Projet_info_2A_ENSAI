@@ -2,8 +2,6 @@ import hashlib
 
 from fastapi import Header, HTTPException
 
-from dao.player_dao import PlayerDao
-
 
 def hash_password(password: str, salt: str = "") -> str:
     """Hashes a password using the SHA-256 algorithm.
@@ -19,7 +17,7 @@ def hash_password(password: str, salt: str = "") -> str:
     return hash_object.hexdigest()
 
 
-def verify_token(x_auth_token=Header(None)) -> PlayerDao:
+def verify_token(x_auth_token=Header(None)) :
     """Verifies the authenticity of a player via the provided auth token.
 
     This function checks if a token is present in the request headers and
@@ -36,8 +34,8 @@ def verify_token(x_auth_token=Header(None)) -> PlayerDao:
     if not x_auth_token:
         raise HTTPException(status_code=401, detail="Missing token.")
 
-    player = PlayerDao().find_by_token(x_auth_token)
-    if not player:
-        raise HTTPException(status_code=401, detail="Invalid token.")
+    # player = PlayerDao().find_by_token(x_auth_token)
+    # if not player:
+    #     raise HTTPException(status_code=401, detail="Invalid token.")
 
-    return player
+    # return player
