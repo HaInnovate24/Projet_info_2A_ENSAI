@@ -37,13 +37,13 @@ class ScoringStrategy:
         return new_elo_a, new_elo_b
 
     @classmethod
-    def update_player_ratings(cls, game: Game):
+    def update_player_ratings(cls, game: Game, winner):
         """Calculates and updates the elo attributes of the players.
         No update if there is no winner (Draw).
         """
-        if not game.winner:
+        if not winner:
             return
 
         game.player1.elo, game.player2.elo = cls.calculate_new_ratings(
-            game.player1.elo, game.player2.elo, player_a_won=(game.player1 == game.winner)
+            game.player1.elo, game.player2.elo, player_a_won=(game.player1 == winner)
         )
