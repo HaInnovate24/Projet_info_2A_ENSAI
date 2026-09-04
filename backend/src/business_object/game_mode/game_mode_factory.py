@@ -1,7 +1,8 @@
+from fastapi import HTTPException
+
 from business_object.game_mode.coin_flip_mode import CoinFlipMode
 from business_object.game_mode.dice_mode import DiceMode
 from business_object.game_mode.game_mode import GameMode
-from fastapi import HTTPException
 
 
 class GameModeFactory:

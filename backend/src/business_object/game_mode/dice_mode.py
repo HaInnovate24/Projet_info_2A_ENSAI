@@ -1,8 +1,7 @@
 import secrets
 
-from business_object.game_mode.game_mode import GameMode
-
 from business_object.game import Game
+from business_object.game_mode.game_mode import GameMode
 from business_object.player import Player
 
 

@@ -1,4 +1,4 @@
-from player import Player
+from business_object.player import Player
 
 
 class Game:
