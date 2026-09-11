@@ -111,7 +111,7 @@ class GameDao(metaclass=Singleton):
                     cursor.execute(
                         """
                         SELECT *
-                          FROM game
+                        FROM game
                          WHERE id_player1 = %(id_p)s OR id_player2 = %(id_p)s
                          ORDER BY timestamp DESC;
                         """,

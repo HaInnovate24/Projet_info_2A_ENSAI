@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from schema.game_model import GamePlayModel, GameResponse
+from schema.game_model import GamePlayModel, GameReadModel, GameResponse
 from service.game_service import GameService
 from utils.log_utils import get_logger
 from utils.security import verify_token
@@ -41,3 +41,9 @@ def play_game(
         new_elo1=game.player1.elo,
         new_elo2=game.player2.elo,
     )
+
+
+@router.get("/player/{id_player}/games", response_model=[GameReadModel], tags=["Games"])
+async def get_games(id_player, game_service=Depends(get_game_service), game_mode=None):
+    games = game_service.find_all_by_player(id_player, game_mode)
+    return games
