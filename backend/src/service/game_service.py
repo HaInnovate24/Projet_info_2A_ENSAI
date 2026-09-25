@@ -69,3 +69,22 @@ class GameService:
             return games
         else:
             return [g for g in games if g.game_mode == game_mode]
+
+    @log
+    def get_win_loss_stats(self, id_player):
+        games = GameDao().find_all_by_player(id_player)
+
+        victoires = 0
+        defaites = 0
+        nuls = 0
+
+        for game in games:
+            winner = game["winner"]
+            if winner is None:
+                nuls += 1
+            elif winner["id_player"] == id_player:
+                victoires += 1
+            else:
+                defaites += 1
+
+        return {"victoires": victoires, "defaites": defaites, "nuls": nuls}

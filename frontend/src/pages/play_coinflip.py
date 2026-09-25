@@ -17,13 +17,13 @@ from utils.auth_guard import check_authentification
 from utils.log_init import get_page_logger
 
 st.title("Play a Coin flip")
-logger = get_page_logger("play_game")
+logger = get_page_logger("play_coinflip")
 
 check_authentification()
 
 player = st.session_state.get("player")
 
-response = api_client.get("/player/")
+response = api_client.get("/player")
 
 if response["status_code"] != 200:
     st.error("Error loading players")
@@ -43,7 +43,7 @@ opponent = st.selectbox("Choose an opponent", opponents, format_func=lambda j: j
 bet = st.radio("Heads or Tails", ["heads", "tails"])
 
 if st.button("Play"):
-    logger.info("Play a game")
+    logger.info("Play a coinflip")
     with st.spinner("Wait for it..."):
         time.sleep(1)
 

@@ -25,7 +25,14 @@ players = api_client.get("/player").get("data")
 if players:
     if isinstance(players, list):
         df = pd.DataFrame(players)
-        st.dataframe(df, hide_index=True)
+
+        df["URL"] = df["id_player"].apply(lambda player_id: f"/player_stats?id_player={player_id}")
+
+        st.dataframe(
+            df,
+            hide_index=True,
+            column_config={"URL": st.column_config.LinkColumn("Stats", display_text="📊")},
+        )
     else:
         logger.info("No players found.")
         st.info("No players found.")

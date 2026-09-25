@@ -50,3 +50,12 @@ async def get_games(id_player: int, game_mode: str = None, game_service=Depends(
     """
 
     return game_service.find_all_by_player(id_player, game_mode)
+
+
+@router.get("/players/{id_player}/win-loss", tags=["Games"])
+async def get_win_loss_stats(id_player: int, game_service=Depends(get_game_service)):
+    """
+    Retrieve games stats filtered by player ID.
+    """
+
+    return game_service.get_win_loss_stats(id_player)
