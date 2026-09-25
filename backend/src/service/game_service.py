@@ -79,10 +79,10 @@ class GameService:
         nuls = 0
 
         for game in games:
-            winner = game["winner"]
+            winner = game.winner
             if winner is None:
                 nuls += 1
-            elif winner["id_player"] == id_player:
+            elif winner.id_player == id_player:
                 victoires += 1
             else:
                 defaites += 1

@@ -40,6 +40,22 @@ with col2:
     st.write(f"Email : {player['email']}")
     st.checkbox("Fan de Pokémon", value=player["pokemon_fan"])
 
+# Récupération des stats
+games_stats_response = api_client.get(f"/game/players/{player_id}/win-loss")
+
+games_stats = games_stats_response["data"]
+# Crétaion de trois colonnes
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Victoires", games_stats["victoires"])
+
+with col2:
+    st.metric("Defaites", games_stats["defaites"])
+
+with col3:
+    st.metric("Nulls", games_stats["nuls"])
+
 
 # Récupération des parties du joueur
 games_response = api_client.get("/game", params={"id_player": player_id})
